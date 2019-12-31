@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间的值为dao层接口的权限定名 -->
+<mapper namespace="com.bw.dao.GoodsDao">
+	<select id="listGoods" resultType="Goods">
+	  select * from tb_goods join tb_brand 
+	  on tb_goods.bid=tb_brand.bid 
+	  join tb_goodskind on tb_goods.kid=tb_goodskind.kid
+	 <where>
+	    <if test="gname!=null and gname!=''">and gname like '%${gname}%'</if>
+	 </where>
+	</select>
+	
+	<select id="seleb" resultType="Goods">
+	  select * from tb_brand
+	</select>
+	<select id="selek" resultType="Goods">
+	  select * from tb_goodskind
+	</select>
+	<insert id="add">
+	  insert into tb_goods values(null,#{gname},#{yname},#{biger},#{price},#{sl},#{bq},#{image},#{state},#{bid},#{kid})
+	</insert>
+	
+	<select id="toupdate" resultType="Goods">
+	  select * from tb_goods join tb_brand 
+	  on tb_goods.bid=tb_brand.bid 
+	  join tb_goodskind on tb_goods.kid=tb_goodskind.kid
+	  where gid=#{gid}
+	</select>
+	
+	<update id="update">
+	  update tb_goods set gname=#{gname},yname=#{yname},biger=#{biger},price=#{price},sl=#{sl},bq=#{bq},image=#{image},state=#{state},bid=#{bid},kid=#{kid} where gid=#{gid}
+	</update>
+	
+	<update id="dele">
+	  update tb_goods set state=0 where gid=#{gid}
+	</update>
+	<update id="deles">
+	   update tb_goods set state=0 where gid=
+	   <foreach collection="gid" item="gid" separator=",">
+	    #{gid}
+	   </foreach>
+	</update>
+	
+	<select id="xq" resultType="Goods">
+	  select * from tb_goods join tb_brand 
+	  on tb_goods.bid=tb_brand.bid 
+	  join tb_goodskind on tb_goods.kid=tb_goodskind.kid
+	  where gid=#{gid}
+	</select>
+</mapper>
